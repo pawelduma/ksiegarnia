@@ -19,7 +19,7 @@ public class BookDAOImpl implements BookDAO {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/książki", "root", "MySQLpass");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/książki?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "MySQLpass");
     }
 
     private void closeConnection(Connection connection) {
@@ -46,7 +46,7 @@ public class BookDAOImpl implements BookDAO {
                 Book book = new Book();
                 Author author = new Author();
                 book.setId(resultSet.getLong("id"));
-                book.setBookTitle(resultSet.getString("tytuł książki"));
+                book.setBookTitle(resultSet.getString("tytuł_książki"));
                 book.setCategoryId(resultSet.getLong("id_kategorii"));
                 author.setBookId(resultSet.getLong("id_książki"));
                 author.setFirstName(resultSet.getString("imię"));
@@ -70,10 +70,10 @@ public class BookDAOImpl implements BookDAO {
         List<Author> authorList = new ArrayList<>();
 
         String sql = "select * from książka inner join autor on książka.id = autor.id_książki"
-                + "where tytuł książki like '%"
+                + " where tytuł_książki like '%"
                 + keyWord.trim()
                 + "%'"
-                + "or imię like '%"
+                + " or imię like '%"
                 + keyWord.trim()
                 + "%'"
                 + " or nazwisko like '%" + keyWord.trim() + "%'";
